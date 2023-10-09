@@ -26,5 +26,5 @@ allow-direct-references = true
 
 [[tool.rye.sources]]
 name = "torch"
-url = "https://download.pytorch.org/whl/cpu"
+url = "https://download.pytorch.org/whl/cu118"
 type = "index"
