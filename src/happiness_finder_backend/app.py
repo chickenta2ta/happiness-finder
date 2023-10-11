@@ -17,3 +17,8 @@ def detect():
     results = results.tojson()
 
     return results
+
+
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"
