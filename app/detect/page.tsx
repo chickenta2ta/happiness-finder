@@ -44,7 +44,7 @@ export default function Detect() {
         }
       });
 
-    const intervalID = setInterval(captureFrame, 1000);
+    const intervalID = setInterval(captureFrame, 200);
     return () => {
       clearInterval(intervalID);
     };
