@@ -10,13 +10,16 @@ export default function Detect() {
   const [image, setImage] = useState<string>();
 
   const getRectangles = async (dataURL: string) => {
-    const response = await fetch("http://57.180.60.33:5000/api/detect", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ image: dataURL }),
-    });
+    const response = await fetch(
+      "https://backend.happiness-finder.com/api/detect",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: dataURL }),
+      }
+    );
     const data: BoundingBox[] = await response.json();
 
     return data;
