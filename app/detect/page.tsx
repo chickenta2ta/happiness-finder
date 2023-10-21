@@ -12,7 +12,7 @@ export default function Detect() {
   };
 
   const captureFrame = async () => {
-    if (videoRef.current == null) {
+    if (videoRef.current?.srcObject == null) {
       return;
     }
 
@@ -47,7 +47,9 @@ export default function Detect() {
           videoRef.current.setAttribute("muted", "");
           videoRef.current.setAttribute("playsinline", "");
 
-          videoRef.current.play();
+          videoRef.current.addEventListener("loadeddata", () => {
+            videoRef.current?.play();
+          });
         }
       });
 
