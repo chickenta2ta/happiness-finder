@@ -2,13 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
+import { BoundingBox } from "./boundingBox";
+import { drawRectangles } from "./drawRectangles";
 
 export default function Detect() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [image, setImage] = useState<string>();
 
-  const drawRectangles = async (img: string) => {
-    return img;
+  const getRectangles = async (dataURL: string) => {
+    const response = await fetch("http://57.180.60.33:5000/api/detect", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: dataURL }),
+    });
+    const data: BoundingBox[] = await response.json();
+
+    return data;
   };
 
   const captureFrame = async () => {
@@ -22,12 +33,16 @@ export default function Detect() {
     canvas.width = videoRef.current.videoWidth;
 
     const ctx = canvas.getContext("2d");
-    ctx?.drawImage(videoRef.current, 0, 0);
 
-    const dataURL = canvas.toDataURL();
+    if (ctx == null) {
+      return;
+    }
+
+    ctx.drawImage(videoRef.current, 0, 0);
     try {
-      const img = await drawRectangles(dataURL);
-      setImage(img);
+      const rectangles = await getRectangles(canvas.toDataURL());
+      await drawRectangles(ctx, rectangles);
+      setImage(canvas.toDataURL());
     } catch (error) {
       console.error(error);
     }
