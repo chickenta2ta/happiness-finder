@@ -1,7 +1,7 @@
 "use client";
 
-import Stack from "@mui/material/Stack";
 import { useEffect, useRef, useState } from "react";
+import Div100vh from "react-div-100vh";
 
 export default function Detect() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -58,15 +58,22 @@ export default function Detect() {
   }, []);
 
   return (
-    <Stack
-      justifyContent="center"
-      sx={{
-        bgcolor: "#F2F2F2",
-        height: "100vh",
+    <Div100vh
+      style={{
+        backgroundColor: "#F2F2F2",
       }}
     >
       <video ref={videoRef} hidden></video>
-      <img src={image} />
-    </Stack>
+      {image && (
+        <img
+          src={image}
+          style={{
+            position: "absolute",
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
+        />
+      )}
+    </Div100vh>
   );
 }

@@ -1,11 +1,17 @@
+"use client";
+
 import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
+import Div100vh from "react-div-100vh";
 
 export default function Home() {
   return (
-    <Stack sx={{ bgcolor: "#F2F2F2", height: "100vh" }}>
+    <Div100vh
+      style={{
+        backgroundColor: "#F2F2F2",
+      }}
+    >
       <Typography
         variant="h4"
         sx={{ color: "#252020", paddingLeft: 2.5, paddingTop: 10 }}
@@ -33,6 +39,6 @@ export default function Home() {
       >
         Start
       </Button>
-    </Stack>
+    </Div100vh>
   );
 }
