@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-happinessfinderfront-dev-154755-authRole",
+      "UnauthRoleArn": "arn:aws:iam::541011191675:role/amplify-happinessfinderfront-dev-154755-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::541011191675:role/amplify-happinessfinderfront-dev-154755-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-happinessfinderfront-dev-154755-deployment",
+      "UnauthRoleName": "amplify-happinessfinderfront-dev-154755-unauthRole",
+      "StackName": "amplify-happinessfinderfront-dev-154755",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:541011191675:stack/amplify-happinessfinderfront-dev-154755/9da21be0-6f14-11ee-b27f-061c3630b8cd",
+      "AmplifyAppId": "d3hwyv4lg2hl5t"
+    }
+  }
+}
