@@ -36,11 +36,18 @@ export default function Detect() {
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({
-        video: true,
+        video: {
+          facingMode: { exact: "environment" },
+        },
       })
       .then((mediaStream) => {
         if (videoRef.current) {
           videoRef.current.srcObject = mediaStream;
+
+          videoRef.current.setAttribute("muted", "");
+          videoRef.current.setAttribute("playsinline", "");
+
+          videoRef.current.play();
         }
       });
 
@@ -58,7 +65,7 @@ export default function Detect() {
         height: "100vh",
       }}
     >
-      <video ref={videoRef} autoPlay hidden></video>
+      <video ref={videoRef} hidden></video>
       <img src={image} />
     </Stack>
   );
