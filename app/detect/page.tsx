@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
 import { BoundingBox } from "./boundingBox";
-import { drawRectangles } from "./drawRectangles";
+import { drawCircles } from "./drawCircles";
 
 export default function Detect() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -44,7 +44,7 @@ export default function Detect() {
     ctx.drawImage(videoRef.current, 0, 0);
     try {
       const rectangles = await getRectangles(canvas.toDataURL());
-      await drawRectangles(ctx, rectangles);
+      await drawCircles(ctx, rectangles);
       setImage(canvas.toDataURL());
     } catch (error) {
       console.error(error);
