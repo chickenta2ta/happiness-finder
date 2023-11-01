@@ -18,7 +18,7 @@ export async function drawCircles(
     const radius = (width + height) / 4;
 
     ctx.lineWidth = 5;
-    ctx.strokeStyle = "rgb(252 214 31 / 80%)";
+    ctx.strokeStyle = "rgb(234 106 116 / 80%)";
 
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
