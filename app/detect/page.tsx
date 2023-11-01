@@ -35,8 +35,8 @@ export default function Detect() {
 
     const canvas = document.createElement("canvas");
 
-    canvas.height = videoRef.current.videoHeight;
-    canvas.width = videoRef.current.videoWidth;
+    canvas.height = 640;
+    canvas.width = 480;
 
     const ctx = canvas.getContext("2d");
 
@@ -44,7 +44,17 @@ export default function Detect() {
       return;
     }
 
-    ctx.drawImage(videoRef.current, 0, 0);
+    ctx.drawImage(
+      videoRef.current,
+      0,
+      0,
+      videoRef.current.videoWidth,
+      videoRef.current.videoHeight,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
     try {
       const rectangles = await getRectangles(
         canvas.toDataURL("image/jpeg", 0.35)
