@@ -10,17 +10,20 @@ export default function Detect() {
   const [image, setImage] = useState<string>();
 
   const getRectangles = async (dataURL: string) => {
-    const response = await fetch(
+    const blobResponse = await fetch(dataURL);
+    const blob = await blobResponse.blob();
+
+    const jsonResponse = await fetch(
       "https://backend.happiness-finder.com/api/detect",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": blob.type,
         },
-        body: JSON.stringify({ image: dataURL }),
+        body: blob,
       }
     );
-    const data: BoundingBox[] = await response.json();
+    const data: BoundingBox[] = await jsonResponse.json();
 
     return data;
   };
@@ -43,7 +46,9 @@ export default function Detect() {
 
     ctx.drawImage(videoRef.current, 0, 0);
     try {
-      const rectangles = await getRectangles(canvas.toDataURL());
+      const rectangles = await getRectangles(
+        canvas.toDataURL("image/jpeg", 0.35)
+      );
       await drawCircles(ctx, rectangles);
       setImage(canvas.toDataURL());
     } catch (error) {
@@ -88,9 +93,10 @@ export default function Detect() {
         <img
           src={image}
           style={{
+            left: "50%",
             position: "absolute",
             top: "50%",
-            transform: "translateY(-50%)",
+            transform: "translateX(-50%) translateY(-50%)",
           }}
         />
       )}
