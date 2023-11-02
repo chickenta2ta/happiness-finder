@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@mui/material/Button";
 import { useEffect, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
 import { BoundingBox } from "./boundingBox";
@@ -96,6 +97,7 @@ export default function Detect() {
     <Div100vh
       style={{
         backgroundColor: "#F2F2F2",
+        zIndex: 1,
       }}
     >
       <video ref={videoRef} hidden></video>
@@ -107,9 +109,24 @@ export default function Detect() {
             position: "absolute",
             top: "50%",
             transform: "translateX(-50%) translateY(-50%)",
+            zIndex: 2,
           }}
         />
       )}
+      <Button
+        href="/congrats"
+        variant="contained"
+        sx={{
+          bgcolor: "#EA6A74",
+          bottom: "20px",
+          position: "absolute",
+          right: "20px",
+          width: "40%",
+          zIndex: 3,
+        }}
+      >
+        Found
+      </Button>
     </Div100vh>
   );
 }
