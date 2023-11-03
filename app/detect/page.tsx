@@ -11,6 +11,8 @@ import { drawCircles } from "./drawCircles";
 export default function Detect() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [image, setImage] = useState<string>();
+  const [rectangles, setRectangles] = useState<BoundingBox[]>([]);
+  const [count, setCount] = useState(0);
 
   const getRectangles = async (dataURL: string) => {
     const blobResponse = await fetch(dataURL);
@@ -28,7 +30,7 @@ export default function Detect() {
     );
     const data: BoundingBox[] = await jsonResponse.json();
 
-    return data;
+    setRectangles(data);
   };
 
   const captureFrame = async () => {
@@ -58,16 +60,25 @@ export default function Detect() {
       canvas.width,
       canvas.height
     );
-    try {
-      const rectangles = await getRectangles(
-        canvas.toDataURL("image/jpeg", 0.35)
-      );
-      await drawCircles(ctx, rectangles);
-      setImage(canvas.toDataURL());
-    } catch (error) {
-      console.error(error);
+
+    if (count % 10 === 0) {
+      try {
+        getRectangles(canvas.toDataURL("image/jpeg", 0.35));
+      } catch (error) {
+        console.error(error);
+      }
     }
+
+    await drawCircles(ctx, rectangles);
+    setImage(canvas.toDataURL());
+
+    setCount((prevCount) => prevCount + 1);
   };
+
+  const ref = useRef(captureFrame);
+  useEffect(() => {
+    ref.current = captureFrame;
+  }, [captureFrame]);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -89,7 +100,9 @@ export default function Detect() {
         }
       });
 
-    const intervalID = setInterval(captureFrame, 200);
+    const intervalID = setInterval(() => {
+      ref.current();
+    }, 100);
     return () => {
       clearInterval(intervalID);
     };
