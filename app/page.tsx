@@ -24,13 +24,35 @@ export default function Home() {
       >
         An app to help find four-leaf clovers
       </Typography>
-      <Image src="/home.svg" alt="Explore Logo" fill={true} />
+      <Typography
+        variant="subtitle2"
+        sx={{
+          color: "#EA6A74",
+          paddingLeft: 2.5,
+          paddingTop: 2,
+        }}
+      >
+        Recommended (Tested) Browsers:
+        <br /> - Safari for iOS
+        <br /> - Chrome for Android
+      </Typography>
+      <Image
+        src="/home.svg"
+        alt="Explore Logo"
+        sizes="100vw"
+        style={{
+          width: "100%",
+          height: "auto",
+        }}
+        width={890}
+        height={779}
+      />
       <Button
         href="/detect"
         variant="contained"
         sx={{
           bgcolor: "#00BFA6",
-          bottom: "10%",
+          bottom: "5%",
           left: "50%",
           position: "absolute",
           transform: "translateX(-50%)",
