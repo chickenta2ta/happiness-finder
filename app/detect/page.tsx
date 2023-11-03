@@ -1,6 +1,8 @@
 "use client";
 
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
 import { BoundingBox } from "./boundingBox";
@@ -100,6 +102,23 @@ export default function Detect() {
         zIndex: 1,
       }}
     >
+      <Box
+        sx={{
+          bgcolor: "rgb(255 255 255 / 50%)",
+          display: "flex",
+          justifyContent: "center",
+          left: "50%",
+          position: "absolute",
+          top: "5%",
+          transform: "translateX(-50%)",
+          width: "90%",
+          zIndex: 3,
+        }}
+      >
+        <Typography variant="h5" sx={{ color: "#252020", paddingY: 3 }}>
+          Aim at Clover and Hold Still
+        </Typography>
+      </Box>
       <video ref={videoRef} hidden></video>
       {image && (
         <img
