@@ -5,10 +5,6 @@ export async function drawCircles(
   rectangles: BoundingBox[]
 ) {
   rectangles.forEach((rectangle) => {
-    if (rectangle.name === "Three Leaf Clover") {
-      return;
-    }
-
     const centerX = (rectangle.box.x2 + rectangle.box.x1) / 2;
     const centerY = (rectangle.box.y2 + rectangle.box.y1) / 2;
 

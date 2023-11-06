@@ -30,7 +30,9 @@ export default function Detect() {
     );
     const data: BoundingBox[] = await jsonResponse.json();
 
-    setRectangles(data);
+    setRectangles(
+      data.filter((rectangle) => rectangle.name === "Four Leaf Clover")
+    );
   };
 
   const captureFrame = async () => {
@@ -61,7 +63,7 @@ export default function Detect() {
       canvas.height
     );
 
-    if (count % 10 === 0) {
+    if (count % 10 === 0 || (rectangles.length === 0 && count % 5 === 0)) {
       try {
         getRectangles(canvas.toDataURL("image/jpeg", 0.35));
       } catch (error) {
