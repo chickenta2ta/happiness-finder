@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
+import { v4 as uuidv4 } from "uuid";
 import { BoundingBox } from "./boundingBox";
 import { drawCircles } from "./drawCircles";
 
@@ -13,6 +14,7 @@ export default function Detect() {
   const [image, setImage] = useState<string>();
   const [rectangles, setRectangles] = useState<BoundingBox[]>([]);
   const [count, setCount] = useState(0);
+  const [timer, setTimer] = useState(0);
 
   const getRectangles = async (dataURL: string) => {
     const blobResponse = await fetch(dataURL);
@@ -77,6 +79,22 @@ export default function Detect() {
     setCount((prevCount) => prevCount + 1);
   };
 
+  const onClick = () => {
+    fetch(
+      "https://script.google.com/macros/s/AKfycby5AkTF3Dc2G-iiWb7zUHF2bbSZHFz0HPCd_Npvb4Wgrxdfv_qJkyMnrvhaxE7VNxc/exec",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          userId: uuidv4(),
+          elapsedTime: timer,
+        }),
+      }
+    );
+    setTimeout(() => {
+      window.location.href = "/congrats";
+    }, 100);
+  };
+
   const ref = useRef(captureFrame);
   useEffect(() => {
     ref.current = captureFrame;
@@ -104,6 +122,7 @@ export default function Detect() {
 
     const intervalID = setInterval(() => {
       ref.current();
+      setTimer((prevTimer) => prevTimer + 0.1);
     }, 100);
     return () => {
       clearInterval(intervalID);
@@ -148,7 +167,7 @@ export default function Detect() {
         />
       )}
       <Button
-        href="/congrats"
+        onClick={onClick}
         variant="contained"
         sx={{
           bgcolor: "#EA6A74",
