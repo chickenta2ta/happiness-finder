@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
 import { v4 as uuidv4 } from "uuid";
+import { adjustConfidence } from "./adjustConfidence";
 import { BoundingBox } from "./boundingBox";
 import { drawCircles } from "./drawCircles";
 
@@ -32,9 +33,7 @@ export default function Detect() {
     );
     const data: BoundingBox[] = await jsonResponse.json();
 
-    setRectangles(
-      data.filter((rectangle) => rectangle.name === "Four Leaf Clover")
-    );
+    setRectangles(adjustConfidence(data));
   };
 
   const captureFrame = async () => {

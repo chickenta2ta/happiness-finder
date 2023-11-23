@@ -13,8 +13,12 @@ export async function drawCircles(
 
     const radius = (width + height) / 4;
 
+    if (rectangle.confidence < 0.4 && radius > 75) {
+      return;
+    }
+
     ctx.lineWidth = 10;
-    ctx.strokeStyle = "rgb(234 106 116 / 80%)";
+    ctx.strokeStyle = `rgb(234 106 116 / ${rectangle.confidence * 0.95})`;
 
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
