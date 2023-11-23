@@ -44,8 +44,8 @@ export default function Detect() {
 
     const canvas = document.createElement("canvas");
 
-    canvas.height = 640;
-    canvas.width = 480;
+    canvas.width = 1080;
+    canvas.height = 1920;
 
     const ctx = canvas.getContext("2d");
 
@@ -67,14 +67,14 @@ export default function Detect() {
 
     if (count % 10 === 0 || (rectangles.length === 0 && count % 5 === 0)) {
       try {
-        getRectangles(canvas.toDataURL("image/jpeg", 0.35));
+        getRectangles(canvas.toDataURL("image/jpeg", 0.85));
       } catch (error) {
         console.error(error);
       }
     }
 
     await drawCircles(ctx, rectangles);
-    setImage(canvas.toDataURL());
+    setImage(canvas.toDataURL("image/jpeg", 0.85));
 
     setCount((prevCount) => prevCount + 1);
   };
@@ -104,6 +104,8 @@ export default function Detect() {
     navigator.mediaDevices
       .getUserMedia({
         video: {
+          width: 1920,
+          height: 1080,
           facingMode: { exact: "environment" },
         },
       })
@@ -158,10 +160,13 @@ export default function Detect() {
         <img
           src={image}
           style={{
+            height: "100%",
             left: "50%",
+            objectFit: "contain",
             position: "absolute",
             top: "50%",
             transform: "translateX(-50%) translateY(-50%)",
+            width: "100%",
             zIndex: 2,
           }}
         />
