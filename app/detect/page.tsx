@@ -18,6 +18,7 @@ export default function Detect() {
   const [count, setCount] = useState(0);
   const [timer, setTimer] = useState(0);
   const [threshold, setThreshold] = useState(0);
+  const [thresholds, setThresholds] = useState<number[]>([]);
 
   const getRectangles = async (dataURL: string) => {
     const blobResponse = await fetch(dataURL);
@@ -77,17 +78,21 @@ export default function Detect() {
     await drawCircles(ctx, rectangles, threshold);
     setImage(canvas.toDataURL("image/jpeg", 0.85));
 
+    if (count % 10 === 0) {
+      setThresholds([...thresholds, threshold]);
+    }
     setCount((prevCount) => prevCount + 1);
   };
 
   const onClick = () => {
     fetch(
-      "https://script.google.com/macros/s/AKfycby5AkTF3Dc2G-iiWb7zUHF2bbSZHFz0HPCd_Npvb4Wgrxdfv_qJkyMnrvhaxE7VNxc/exec",
+      "https://script.google.com/macros/s/AKfycbz6NqwQnFB2-iYmcz-Ls3DbkCyWUwP_pAGGFsmu0kNjgiLJkMsDoPEa7omABw-nSEMF/exec",
       {
         method: "POST",
         body: JSON.stringify({
           userId: uuidv4(),
           elapsedTime: timer,
+          thresholds: thresholds,
         }),
       }
     );
