@@ -4,21 +4,26 @@ import Button from "@mui/material/Button";
 import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { Howl } from "howler";
 import { useEffect, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
 import { v4 as uuidv4 } from "uuid";
 import { adjustConfidence } from "./adjustConfidence";
 import { BoundingBox } from "./boundingBox";
 import { drawCircles } from "./drawCircles";
+import { isConfident } from "./isConfident";
 
 export default function Detect() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [image, setImage] = useState<string>();
   const [rectangles, setRectangles] = useState<BoundingBox[]>([]);
-  const [count, setCount] = useState(0);
+  const [threshold, setThreshold] = useState(55);
+  const [sound, setSound] = useState<Howl>();
+
   const [timer, setTimer] = useState(0);
-  const [threshold, setThreshold] = useState(0);
   const [thresholds, setThresholds] = useState<number[]>([]);
+
+  const [count, setCount] = useState(0);
 
   const getRectangles = async (dataURL: string) => {
     const blobResponse = await fetch(dataURL);
@@ -77,6 +82,9 @@ export default function Detect() {
 
     await drawCircles(ctx, rectangles, threshold);
     setImage(canvas.toDataURL("image/jpeg", 0.85));
+    if (count % 20 === 0 && isConfident(rectangles, threshold)) {
+      sound?.play();
+    }
 
     if (count % 10 === 0) {
       setThresholds([...thresholds, threshold]);
@@ -132,6 +140,12 @@ export default function Detect() {
         }
       });
 
+    setSound(
+      new Howl({
+        src: ["found.mp3"],
+      })
+    );
+
     const intervalID = setInterval(() => {
       ref.current();
       setTimer((prevTimer) => prevTimer + 0.1);
@@ -172,6 +186,7 @@ export default function Detect() {
         <Slider
           value={threshold}
           onChange={handleChange}
+          max={85}
           min={25}
           sx={{
             alignSelf: "center",
