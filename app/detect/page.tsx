@@ -1,7 +1,8 @@
 "use client";
 
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Slider from "@mui/material/Slider";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
@@ -16,6 +17,7 @@ export default function Detect() {
   const [rectangles, setRectangles] = useState<BoundingBox[]>([]);
   const [count, setCount] = useState(0);
   const [timer, setTimer] = useState(0);
+  const [threshold, setThreshold] = useState(0);
 
   const getRectangles = async (dataURL: string) => {
     const blobResponse = await fetch(dataURL);
@@ -72,7 +74,7 @@ export default function Detect() {
       }
     }
 
-    await drawCircles(ctx, rectangles);
+    await drawCircles(ctx, rectangles, threshold);
     setImage(canvas.toDataURL("image/jpeg", 0.85));
 
     setCount((prevCount) => prevCount + 1);
@@ -92,6 +94,10 @@ export default function Detect() {
     setTimeout(() => {
       window.location.href = "/congrats";
     }, 100);
+  };
+
+  const handleChange = (_: Event, newThreshold: number | number[]) => {
+    setThreshold(newThreshold as number);
   };
 
   const ref = useRef(captureFrame);
@@ -137,11 +143,9 @@ export default function Detect() {
         zIndex: 1,
       }}
     >
-      <Box
+      <Stack
         sx={{
           bgcolor: "rgb(255 255 255 / 50%)",
-          display: "flex",
-          justifyContent: "center",
           left: "50%",
           position: "absolute",
           top: "5%",
@@ -150,10 +154,27 @@ export default function Detect() {
           zIndex: 3,
         }}
       >
-        <Typography variant="h5" sx={{ color: "#252020", paddingY: 3 }}>
-          Aim at Clover and Hold Still
+        <Typography
+          variant="h6"
+          sx={{
+            color: "#252020",
+            paddingLeft: "10%",
+            paddingTop: 2,
+          }}
+        >
+          Confidence Threshold: {threshold}%
         </Typography>
-      </Box>
+        <Slider
+          value={threshold}
+          onChange={handleChange}
+          min={25}
+          sx={{
+            alignSelf: "center",
+            color: "#00BFA6",
+            width: "80%",
+          }}
+        />
+      </Stack>
       <video ref={videoRef} hidden></video>
       {image && (
         <img

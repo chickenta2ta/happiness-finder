@@ -2,7 +2,8 @@ import { BoundingBox } from "./boundingBox";
 
 export async function drawCircles(
   ctx: CanvasRenderingContext2D,
-  rectangles: BoundingBox[]
+  rectangles: BoundingBox[],
+  threshold: number
 ) {
   rectangles.forEach((rectangle) => {
     const centerX = (rectangle.box.x2 + rectangle.box.x1) / 2;
@@ -14,6 +15,10 @@ export async function drawCircles(
     const radius = (width + height) / 4;
 
     if (rectangle.confidence < 0.4 && radius > 75) {
+      return;
+    }
+
+    if (rectangle.confidence < threshold / 100) {
       return;
     }
 
