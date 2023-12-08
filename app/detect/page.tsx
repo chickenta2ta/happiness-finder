@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import { adjustConfidence } from "./adjustConfidence";
 import { BoundingBox } from "./boundingBox";
 import { drawCircles } from "./drawCircles";
-import { isConfident } from "./isConfident";
+import { getMaxConfidence } from "./getMaxConfidence";
 
 export default function Detect() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,6 +19,7 @@ export default function Detect() {
   const [rectangles, setRectangles] = useState<BoundingBox[]>([]);
   const [threshold, setThreshold] = useState(55);
   const [sound, setSound] = useState<Howl>();
+  const [highSound, setHighSound] = useState<Howl>();
 
   const [timer, setTimer] = useState(0);
   const [thresholds, setThresholds] = useState<number[]>([]);
@@ -82,7 +83,12 @@ export default function Detect() {
 
     await drawCircles(ctx, rectangles, threshold);
     setImage(canvas.toDataURL("image/jpeg", 0.85));
-    if (count % 20 === 0 && isConfident(rectangles, threshold)) {
+    if (count % 20 === 0 && getMaxConfidence(rectangles) > 0.9) {
+      highSound?.play();
+    } else if (
+      count % 20 === 0 &&
+      getMaxConfidence(rectangles) > threshold / 100
+    ) {
       sound?.play();
     }
 
@@ -143,6 +149,11 @@ export default function Detect() {
     setSound(
       new Howl({
         src: ["found.mp3"],
+      })
+    );
+    setHighSound(
+      new Howl({
+        src: ["found_high.mp3"],
       })
     );
 
