@@ -1,7 +1,6 @@
 "use client";
 
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import Div100vh from "react-div-100vh";
@@ -147,7 +146,7 @@ export default function Detect() {
           }}
         />
       )}
-      <Button
+      {/* <Button
         href="/congrats"
         variant="contained"
         sx={{
@@ -160,7 +159,7 @@ export default function Detect() {
         }}
       >
         Found
-      </Button>
+      </Button> */}
     </Div100vh>
   );
 }
